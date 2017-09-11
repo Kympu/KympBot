@@ -1,23 +1,21 @@
-package Kympu.KympBot;
-
-import java.io.PrintWriter;
+package Kympu.KympBot.Commands.Other;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
-public class TestBot {
-	public static void main(String[] args){
-		
+public class youTube {
+	public String Message(MessageReceivedEvent e){
+		///////////////////NOT WORKING RN////////////////////
 		String Send = "";
+		Message objMsg = e.getMessage();
 		String YouTubeLink = null;
-		String Message = "captain sparklez";
-		YouTubeLink = "https://www.youtube.com/results?search_query=";
+		String Message = objMsg.getContent();
+		YouTubeLink = "https://www.youtube.com/results?sp=EgIQAQ%253D%253D&q=";
 		String YouTube = "https://www.youtube.com";	    
 		
 		String Search = Message.toLowerCase().toString()
@@ -42,10 +40,8 @@ public class TestBot {
     			
 				doc = Jsoup.connect(YouTubeSearch).get();
 				
-				Elements urlDig = doc.select("div#tv-queue-title-msg");	
-				System.out.println("In Class Url Dig: " + urlDig);
-				  	//PrintWriter writer = new PrintWriter("C:/Users/Eric/Desktop/test.txt");
-				  	 //writer.println(doc);
+				Elements urlDig = doc.select("div#content div#container div#primary div#contents");	
+				System.out.println("In Class Url Dig: " + urlDig);								
 					Element method2 = urlDig.select("div.yt-lockup-content h3").first();
 					Elements Link = method2.select("a[href]");				
 					String FinalLink = Link.attr("href");
@@ -58,5 +54,6 @@ public class TestBot {
 			Send = "No information found!";
 		} 
 		
+		return Send;
 	}
 }
