@@ -1,12 +1,17 @@
 package Kympu.KympBot;
 
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import Kympu.KympBot.Commands.Other.GoogleFetch;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
@@ -14,49 +19,77 @@ import net.dv8tion.jda.core.entities.MessageEmbed;
 public class TestBot {
 	public static void main(String[] args){
 		
-		String Send = "";
-		String YouTubeLink = null;
-		String Message = "captain sparklez";
-		YouTubeLink = "https://www.youtube.com/results?search_query=";
-		String YouTube = "https://www.youtube.com";	    
+		//Message objMsg = "Ogre latvia";
+		MessageEmbed embed = null;
+		String finalLink = "";		
+		//String Message = objMsg.getContent(); 
+		String Search = "weather+Ogre+latvia";
 		
-		String Search = Message.toLowerCase().toString()
-				.replaceAll("!youtube ", "")
-				.replaceAll("!yt ", "")
-				.replaceAll(" ", "+");
-		if(Search.contains("#playlist ")){
-			Search = Search.toString()
-    				.replaceAll("#playlist", "");
-			YouTubeLink = "https://www.youtube.com/results?sp=EgIQAw%253D%253D&q="; 
-			}
-		if(Search.contains("#new")){
-			Search = Search.toString()
-    				.replaceAll("#new ", "");
-			YouTubeLink = "https://www.youtube.com/results?sp=EgIIAw%253D%253D&q=";		    			
-			}
-		
-			String YouTubeSearch = YouTubeLink + Search;
-			System.out.println("In Class YT Search: " + YouTubeSearch);
-			Document doc = null;
-			try{	
-    			
-				doc = Jsoup.connect(YouTubeSearch).get();
+		String GoogleLink = "https://www.google.com/search?q=";	    			
+		String GoogleSearch = GoogleLink + Search;
+		Document doc = null;
+		try{	
+			try {
+				doc = Jsoup.connect(GoogleSearch).get();
+			} catch (Exception ex) {
 				
-				Elements urlDig = doc.select("div#tv-queue-title-msg");	
-				System.out.println("In Class Url Dig: " + urlDig);
-				  	//PrintWriter writer = new PrintWriter("C:/Users/Eric/Desktop/test.txt");
-				  	 //writer.println(doc);
-					Element method2 = urlDig.select("div.yt-lockup-content h3").first();
-					Elements Link = method2.select("a[href]");				
-					String FinalLink = Link.attr("href");
-					Send = YouTube + FinalLink;
-					
-    			
+				ex.printStackTrace();
 			}
 			
+			Document doc2 = doc;
+			try{	
+				
+				System.out.println(GoogleSearch);
+				//Title
+				Elements googleDig = doc2.select("div#wob_wc");
+				Element titleDig = googleDig.select("div#wob_loc").first();				
+					String Title = titleDig.text();
+				
+				Element timeDig = googleDig.select("div#wob_dts").first();
+					String Time = timeDig.text();
+					
+				Element condDig = googleDig.select("div#wob_dcp").first();
+					String Condition = condDig.text();
+					
+				Element picDig = googleDig.select("div#wob_d img").first();
+					String imageIcon = picDig.attr("src");
+					imageIcon = imageIcon.replaceAll("//", "");
+					
+				Element tempDigCels = googleDig.select("div.vk_bk span").first();
+					String tempCels = tempDigCels.text();
+					
+				Element tempDigFar = googleDig.select("div.vk_bk span + span").first();
+					String tempFar = tempDigFar.text();
+					
+				Element extraInfoDig = googleDig.select("div.wob-dtl").first();
+					String extraInfo = extraInfoDig.text();
+					
+				/*System.out.println("Title: " + Title);
+				System.out.println("Time: " + Time);
+				System.out.println("Condition: " + Condition);
+				System.out.println("Picture: " + imageIcon);
+				System.out.println("Temperature: " + tempCels + " | " + tempFar);
+				System.out.println("Extra: " + extraInfo);*/
+				
+				String fullTemp = tempCels + " | " + tempFar;
+				String Content = Time + "\n" + Condition + "\n" + fullTemp + "\n" + extraInfo;
+				
+				EmbedBuilder eb = new EmbedBuilder();
+				eb.setTitle(Title);
+				eb.setDescription(Content);
+    			eb.setThumbnail(imageIcon);
+    			embed = eb.build();
+    			//objChannel.sendMessage(embed).complete();
+			}
+				
+			catch(Exception ex){
+				//objChannel.sendMessage("No information found!").complete();
+			}
+			
+		}
 		catch(Exception ex){
-			Send = "No information found!";
-		} 
+			//objChannel.sendMessage("No information found!").complete();
+		}	
 		
 	}
 }

@@ -5,11 +5,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 public class urban {
-	public String Message(MessageReceivedEvent e){
+	public MessageEmbed Message(MessageReceivedEvent e){
+		EmbedBuilder eb = new EmbedBuilder();
+		MessageEmbed embed = null;
 		String Send = "";
 		Message objMsg = e.getMessage();
 		String input = objMsg.getContent();
@@ -38,14 +42,20 @@ public class urban {
 			String Searching = input.toString()
 					.replaceAll("!urban", "")
 					.replaceAll("!Urban", "");
-			
-			Send = "```From Urban dictionary\n\nSearching:" + Searching + "\n\n" + Send2 + "```";					
+			eb.setTitle("From Urban Dicteonary ~ " + Searching);
+			eb.setDescription("\n\n" + Send2);
+			eb.setThumbnail("http://www.userlogos.org/files/logos/WoolfBeng/urban1.png");
+			embed = eb.build();					
 		}
 	}
 	catch(Exception ex){
-		Send = "Article too long! \n" + UrbanSearch;
+		eb.setTitle("From Urban Dicteonary");
+		eb.setDescription("Article too long." + "\n\n" + UrbanSearch);
+		eb.setThumbnail("http://www.userlogos.org/files/logos/WoolfBeng/urban1.png");
+		embed = eb.build();		
+		
 	}	    		
 		
-		return Send;
+		return embed;
 	}
 }
