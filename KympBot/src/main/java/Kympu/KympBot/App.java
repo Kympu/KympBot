@@ -266,7 +266,7 @@ public class App extends ListenerAdapter{
 	    			
 	    		}
 	    		
-	    		if(objMsg.getContent().toLowerCase().startsWith("!rprice") || objMsg.getContent().toLowerCase().startsWith("$")
+	    		if(objMsg.getContent().toLowerCase().startsWith("!price") || objMsg.getContent().toLowerCase().startsWith("!pr")
 		    			&& e.getMessage().getAuthor().getId() != e.getJDA().getSelfUser().getId()){
 
 	    			Report(e);
@@ -380,7 +380,7 @@ public class App extends ListenerAdapter{
 		    		
 	    		}
 	    		
-	    		if(objMsg.getContent().toLowerCase().startsWith("!price") || objMsg.getContent().toLowerCase().startsWith("$")
+	    		if(objMsg.getContent().toLowerCase().startsWith("!buy") || objMsg.getContent().toLowerCase().startsWith("!ali")
 		    			&& e.getMessage().getAuthor().getId() != e.getJDA().getSelfUser().getId()){
 	    			
 	    			Report(e);

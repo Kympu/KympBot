@@ -48,6 +48,10 @@ public class GEprice {
 					HighAlch = "Cannot Alch";
 				}
 				
+				//Buy Limit
+				Elements buyLimitDig = doc2.select("div.infobox-wrapper tr:contains(Buy limit) td");
+				String buyLimit = buyLimitDig.text();
+				
 				//Price Change
 				Elements infoDig = doc2.select("div.infobox-wrapper tr span.infobox-quantity a");
 				Element infoLink = infoDig.select("a[href]").first();
@@ -85,7 +89,8 @@ public class GEprice {
 			    			String endContent = "**" + Title + ": **" + urlDigW2 + " coins" 
     								+ "\n" + Symbol + "**Today's Change: **" + todayChange
     								+ "\n" + SymbolM + "**1 Month Change: **" + monthChange
-    								+ "\n**High Alch: **" + HighAlch;
+    								+ "\n**High Alch: **" + HighAlch
+    								+ "\n**Buy limit: **" + buyLimit;
 			    			
 							eb.setDescription(endContent);
 			    			eb.setThumbnail(imageUrl);
