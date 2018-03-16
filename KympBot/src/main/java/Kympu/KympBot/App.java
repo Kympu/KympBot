@@ -1,5 +1,4 @@
 package Kympu.KympBot;
-//https://discordapp.com/oauth2/authorize?client_id=335464966255542272&scope=bot&permissions=0
 
 import java.awt.Image;
 import java.io.BufferedReader;
